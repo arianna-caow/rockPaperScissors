@@ -33,24 +33,70 @@ function playRound(playerSelection, computerSelection){
 function disableButtons(){
     const buttons = document.querySelectorAll("button");
     buttons.forEach(button => {
-        button.disabled=true
+        if (button.id !== "reset") button.disabled=true;
+    });
+}
+function enableButtons(){
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(button => {
+        button.disabled=false;
     });
 }
 
-function updateScore(){
-    
+function isFinalScore(yourScore, computerScore){
+    let finalResultText = document.querySelector("#final-result");
+    let buttonReset = document.querySelector("#reset");
+    if (yourScore==5){
+        finalResultText.textContent="Congratulations!";
+        disableButtons();
+        buttonReset.textContent="Play Again";
+    } else if (computerScore==5){
+        finalResultText.textContent="Too bad so sad!";
+        disableButtons();
+        buttonReset.textContent="Play Again";
+    }
+
 }
+
+let yourScore = 0;
+let computerScore = 0;
+
+function checkWinLose(result){
+    let userScoreText = document.querySelector("#user-text");
+    let computerScoreText = document.querySelector("#computer-text");
+    let explanation = document.querySelector("#word-explanation");
+    if (result[4]=="W"){
+        yourScore++
+        userScoreText.textContent=yourScore;
+    } else if(result[4]=="L"){
+        computerScore++
+        computerScoreText.textContent=computerScore;
+    }
+    explanation.textContent=result;
+}
+
+function resetGame(){
+    let userScoreText = document.querySelector("#user-text");
+    let computerScoreText = document.querySelector("#computer-text");
+    let explanation = document.querySelector("#word-explanation");
+    let finalResultText = document.querySelector("#final-result");
+    let buttonReset = document.querySelector("#reset");
+    yourScore = 0;
+    computerScore = 0;
+    userScoreText.textContent=yourScore;
+    computerScoreText.textContent=computerScore;
+    explanation.textContent = "Restarted Game."
+    finalResultText.textContent="";
+    buttonReset.textContent="Reset";
+    enableButtons();
+}
+
 function game(){
-    let yourScore = 0;
-    let computerScore = 0;
     let result = "";
     const buttons = document.querySelectorAll("button");
     buttons.forEach((button) => {
         button.addEventListener('click', () => {
             let computerChoice = getComputerChoice();
-            let userScoreText = document.querySelector("#user-text");
-            let computerScoreText = document.querySelector("#computer-text");
-            let explanation = document.querySelector("#word-explanation");
             if(button.id=="rock"){
                 result = playRound("Rock",computerChoice);
                 console.log (result);
@@ -58,26 +104,15 @@ function game(){
             }else if (button.id=="paper"){
                 result = playRound("Paper",computerChoice);
                 console.log (result);
-            } else{
+            } else if (button.id =="scissors"){
                 result = playRound("Scissors", computerChoice);
                 console.log (result);
-            } 
-            if (result[4]=="W"){
-                yourScore++
-                userScoreText.textContent=yourScore;
-            } else if(result[4]=="L"){
-                computerScore++
-                computerScoreText.textContent=computerScore;
+            }  else{
+                console.log("yo");
+                resetGame();
             }
-            explanation.textContent=result;
-            let finalResultText = document.querySelector("#final-result");
-            if (yourScore==5){
-                finalResultText.textContent="Congratulations!";
-                disableButtons();
-            } else if (computerScore==5){
-                finalResultText.textContent="Too bad so sad!";
-                disableButtons();
-            }
+            if (button.id!="reset")checkWinLose(result);
+            isFinalScore(yourScore, computerScore);
 
         });
     });
