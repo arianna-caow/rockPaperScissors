@@ -1,0 +1,34 @@
+h1, #container,
+#word-explanation,
+#final-result,
+.score-labels{
+    display:flex;
+    justify-content:center;
+} 
+
+#container{
+    gap:12px;
+}
+
+.score-labels{
+    gap:50px;
+}
+.individual-score{
+    width:100px;
+    border-radius: 5px;
+    border: thin groove #707070;
+}
+p{
+    text-align:center;
+}
+
+button, h1, p,
+#word-explanation,
+#final-result{
+    font-family: "Gill Sans", sans-serif;
+}
+
+#word-explanation{
+    background-color: #AFDCEB;
+    padding:5px;
+}

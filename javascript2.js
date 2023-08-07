@@ -9,7 +9,7 @@ function playRound(playerSelection, computerSelection){
     computerSelection=computerSelection[0].toUpperCase()+computerSelection.substring(1).toLowerCase();
 
     if (playerSelection==computerSelection){
-        return  `It's a tie! You both chose ${playerSelection}`;
+        return  `You Tied! Both chose ${playerSelection}`;
     } else if (playerSelection[0]=='R'){
         if (computerSelection[0]=='P'){
             return ("You Lose! Paper beats Rock");
@@ -30,29 +30,57 @@ function playRound(playerSelection, computerSelection){
         }
     }
 }
+function disableButtons(){
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach(button => {
+        button.disabled=true
+    });
+}
 
+function updateScore(){
+    
+}
 function game(){
     let yourScore = 0;
     let computerScore = 0;
-    for (let i = 0; i < 5; i++) {
-        let user = prompt("Rock, Paper, Scissors?");
-        let result = playRound(user,getComputerChoice());
-        console.log(result);
-        if (result[4]=="W"){
-            yourScore++
-        } else if(result[4]=="L"){
-            computerScore++
-        }
-    }
-    let finalResult;
-    if(yourScore>computerScore){
-        finalResult = `You won ${yourScore}: ${computerScore}`;
-    }else if (yourScore<computerScore){
-        finalResult = `You lost ${yourScore}: ${computerScore}`;
-    }else{
-        finalResult= "You tied!"
-    }
-    return finalResult;
-}
+    let result = "";
+    const buttons = document.querySelectorAll("button");
+    buttons.forEach((button) => {
+        button.addEventListener('click', () => {
+            let computerChoice = getComputerChoice();
+            let userScoreText = document.querySelector("#user-text");
+            let computerScoreText = document.querySelector("#computer-text");
+            let explanation = document.querySelector("#word-explanation");
+            if(button.id=="rock"){
+                result = playRound("Rock",computerChoice);
+                console.log (result);
+                
+            }else if (button.id=="paper"){
+                result = playRound("Paper",computerChoice);
+                console.log (result);
+            } else{
+                result = playRound("Scissors", computerChoice);
+                console.log (result);
+            } 
+            if (result[4]=="W"){
+                yourScore++
+                userScoreText.textContent=yourScore;
+            } else if(result[4]=="L"){
+                computerScore++
+                computerScoreText.textContent=computerScore;
+            }
+            explanation.textContent=result;
+            let finalResultText = document.querySelector("#final-result");
+            if (yourScore==5){
+                finalResultText.textContent="Congratulations!";
+                disableButtons();
+            } else if (computerScore==5){
+                finalResultText.textContent="Too bad so sad!";
+                disableButtons();
+            }
 
-console.log(game());
+        });
+    });
+
+}
+game();
